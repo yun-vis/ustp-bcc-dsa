@@ -1,6 +1,7 @@
 title: My Minimal Mistakes Site
 description: A site using Minimal Mistakes with GitHub Actions + remote themes.
-url: "https://<your-user>.github.io/<your-repo>"   # Adjust this
+# url: "https://<your-user>.github.io/<your-repo>"   # Adjust this
+url: "https://yun-vis.github.io/ustp-bcc-dsa"   # Adjust this
 
 theme: null   # REQUIRED because you're using a remote theme
 
