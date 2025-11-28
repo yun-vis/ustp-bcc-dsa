@@ -1,0 +1,21 @@
+title: My Minimal Mistakes Site
+description: A site using Minimal Mistakes with GitHub Actions + remote themes.
+url: "https://<your-user>.github.io/<your-repo>"   # Adjust this
+
+theme: null   # REQUIRED because you're using a remote theme
+
+remote_theme: "mmistakes/minimal-mistakes@4.24.0"
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-include-cache
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Required for Minimal Mistakes
+markdown: kramdown
+kramdown:
+  input: GFM
+
+# Minimal Mistakes defaults
+theme_variant: default
