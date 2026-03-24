@@ -20,8 +20,9 @@ DS&A CheatSheet is a website storing teaching material for DS&A development in C
 5. [OOP II: File Management and Class Library](pages/filemanagement)
 6. [OOP III:Inheritance](pages/inheritance)
 7. [OOP IV: Polymorphism](pages/polymorphism)
-8. [DS&A: Basics of Data Structure](pages/list)
-9. [DS&A: Basics of Data Structure and Algorithm](pages/algorithm)
-10. [DS&A: Graphs I, Tree](pages/graph)
-11. [DS&A: Graphs II, Generics](pages/graph#graph-ii-nodeedge-list)
-12. [DS&A: Graphs III, Refactoring & Debugging](pages/graph#graph-iii-nodeedge-list-refactored-using-abstraction)
+8. [DS&A: Basics of Data Structure: List](pages/list)
+9.  [DS&A: Basics of Algorithm: Searching and Sorting](pages/algorithm)
+10. [DS&A: Complexity]
+11. [DS&A: Graphs I](pages/graph#graph-ii-nodeedge-list)
+12. [DS&A: Graphs II, Refactoring & Debugging](pages/graph#graph-iii-nodeedge-list-refactored-using-abstraction)
+13. [Project Presentation]
