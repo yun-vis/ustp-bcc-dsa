@@ -1,22 +1,50 @@
-title: My Minimal Mistakes Site
-description: A site using Minimal Mistakes with GitHub Actions + remote themes.
-# url: "https://<your-user>.github.io/<your-repo>"   # Adjust this
-url: "https://yun-vis.github.io/ustp-bcc-dsa"   # Adjust this
-
+# Theme Settings
 theme: null   # REQUIRED because you're using a remote theme
+remote_theme: "mmistakes/minimal-mistakes@4.24.0" # REQUIRED to specify the theme and version
 
-remote_theme: "mmistakes/minimal-mistakes@4.24.0"
+# Site Settings
+title             : "DS&A CheatSheet"
+name              : "DS&A CheatSheet"
+description       : "This website documents Hsiang-Yun Wu's teaching activities on DS&A"
+url               : "https://yun-vis.github.io/ustp-bcc-dsa"
+teaser            : "/assets/images/teaser/teaser.png"
+
+# Site Author
+author:
+  name            : "Hsiang-Yun Wu"
+  avatar          : "/assets/images/photos/2023.jpg"
+  bio             : "I am a visualization researcher and lecturer."
+  location        : "Austria"
+  email           :
+  links:
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope-square"
+      url: "mailto:hsiang.yun.wu@acm.org"
+    - label: "Website"
+      icon: "fas fa-fw fa-link"
+      url: "http://yun-vis.net/"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/yun-vis"
+    - label: "ORCID"
+      icon: "fa-brands fa-orcid"
+      url: "https://orcid.org/0000-0003-1028-0010"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/hsiang-yun-wu-162758ba/"
+    - label: "Facebook"
+      icon: "fab fa-fw fa-facebook-square"
+      url: "https://www.facebook.com/hsiangyun.wu.3/"
+    - label: "Instagram"
+      icon: "fab fa-fw fa-instagram"
+      url: "https://www.instagram.com/wuhsiangyun/"
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter-square"
+      url: "https://twitter.com/hsiangyunwu"
+
 
 plugins:
   - jekyll-remote-theme
-  - jekyll-include-cache
+  - jekyll-include-cache # REQUIRED to use include_cached
   - jekyll-feed
   - jekyll-seo-tag
-
-# Required for Minimal Mistakes
-markdown: kramdown
-kramdown:
-  input: GFM
-
-# Minimal Mistakes defaults
-theme_variant: default

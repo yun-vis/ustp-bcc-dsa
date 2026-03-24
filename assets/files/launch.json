@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug MyBusiness",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build MyBusiness",
+            "program": "${workspaceFolder}/MyBusiness/bin/Debug/net10.0/MyBusiness.dll",
+            "cwd": "${workspaceFolder}/MyBusiness",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        }
+    ]
+}

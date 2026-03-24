@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build MyBusiness",
+            "type": "process",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "${workspaceFolder}/MyBusiness/MyBusiness.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}

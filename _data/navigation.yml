@@ -1,0 +1,28 @@
+# main links
+main:
+  - title: "Setup"
+    url: /pages/setup
+  - title: "C# Basics I"
+    url: /pages/basics1
+  - title: "C# Basics II"
+    url: /pages/basics2
+  - title: "Class"
+    url: /pages/class
+  - title: "File Management"
+    url: /pages/filemanagement
+  - title: "Inheritance"
+    url: /pages/inheritance
+  - title: "Polymorphism"
+    url: /pages/polymorphism
+  - title: "DS&A: List"
+    url: /pages/list
+  - title: "DS&A: Searching & Sorting"
+    url: /pages/algorithm
+  - title: "DS&A: Graph"
+    url: /pages/graph
+  - title: "Snake"
+    url: /pages/snake
+  - title: "Assignment"
+    url: /pages/assignment
+  - title: "Contributors"
+    url: /pages/contribute
