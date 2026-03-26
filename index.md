@@ -6,7 +6,7 @@ title: "DS&A CheatSheet"
 header:
   image: /assets/images/teaser/teaser.png
   caption: "Image credit: [**Yun**](http://yun-vis.net)"
-last_modified_at: 2026-03-24
+last_modified_at: 2026-03-26
 ---
 
 DS&A CheatSheet is a website storing teaching material for DS&A development in C#.
@@ -22,7 +22,8 @@ DS&A CheatSheet is a website storing teaching material for DS&A development in C
 7. [OOP IV: Polymorphism](pages/polymorphism)
 8. [DS&A: Basics of Data Structure: List](pages/list)
 9.  [DS&A: Basics of Algorithm: Searching and Sorting](pages/algorithm)
-10. [DS&A: Complexity]
-11. [DS&A: Graphs I](pages/graph#graph-ii-nodeedge-list)
-12. [DS&A: Graphs II, Refactoring & Debugging](pages/graph#graph-iii-nodeedge-list-refactored-using-abstraction)
-13. [Project Presentation]
+10. [DS&A: Complexity Theory]
+11. [DS&A: Graphs I, Basic components](pages/graph#graph-ii-nodeedge-list)
+12. [DS&A: Graphs II, Debugging](pages/graph#graph-iii-nodeedge-list-refactored-using-abstraction)
+13. 1~2 weeks break
+14. [Project Presentation]
