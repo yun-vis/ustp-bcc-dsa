@@ -18,8 +18,10 @@ main:
     url: /pages/list
   - title: "DS&A: Searching & Sorting"
     url: /pages/algorithm
-  - title: "DS&A: Graph"
-    url: /pages/graph
+  - title: "DS&A: Graph I"
+    url: /pages/graph1
+  - title: "DS&A: Graph II"
+    url: /pages/graph2
   - title: "Snake"
     url: /pages/snake
   - title: "Assignment"
