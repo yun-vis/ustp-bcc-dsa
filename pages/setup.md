@@ -1,17 +1,15 @@
 ---
 # permalink: /about/
 layout: single
-title: "C# Basics"
+title: "C# Environment Setup"
 classes: wide
 header:
   image: /assets/images/teaser/teaser.png
   caption: "Image credit: [**Yun**](http://yun-vis.net)"
-last_modified_at: 2026-03-21
+last_modified_at: 2026-09-14
 ---
 
-<!-- ![C# Logo](/fhstp-bcc-csharp/assets/images/c-sharp.png) -->
-
-# C# Environment Setup
+# Teaching and Learning Environment
 
 Windows/MacOS/Linux: Visual Studio Code + .Net 10 
   
@@ -20,12 +18,11 @@ Windows/MacOS/Linux: Visual Studio Code + .Net 10
   * [Visual Studio Code](https://code.visualstudio.com/)
   * [.Net 10 SDKs (Long Term Support)](https://dotnet.microsoft.com/en-us/download/dotnet)
   * [All .NET 10.0 downloads](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)
+    * Latest version: SDK 10.0.401
   * What is SDK? A Software Development Kit (SDK) is a set of tools, libraries, documentation, and code samples that developers use to create applications for a specific platform, operating system, or programming language. 
 
 ### Install Visual Studio Code Extension
 
-  <!-- * [.NET MAUI (Optional)](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.dotnet-maui): official Microsoft extension for MAUI developers. -->
-  <!-- * The following two extensions should come automatically. -->
   * [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit)
       * Using C# Dev Kit requires you to sign in with a Microsoft account that has an active Visual Studio subscription. Visual Studio Community, for example. You can sign in with your own account or ustp account.
   * [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
@@ -34,7 +31,8 @@ Windows/MacOS/Linux: Visual Studio Code + .Net 10
   * [PlantUML](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml): Extension for visualizing PUML format in an image.
   
 ### Additional Settings (Optional)
-  * Turn on Word Wrap in the Setting if preferred.
+  * Turn on Word Wrap in the Setting if preferred. File -> Preferences -> Setting
+  * Enable Auto Save. File -> Auto Save
 
 ## CSharp to PlantUML via Extension of VSCode
   * Prerequisite is needed (check the documentation of the extension): 
@@ -43,19 +41,6 @@ Windows/MacOS/Linux: Visual Studio Code + .Net 10
     * CSharp to PlantUML extension -> settings -> Create Association -> Create object association from field and property reference 
   * Usage: Ctrl+Shift+P to enable the vscode Command Palette and run the command "csharp2plantuml.classDiagram".
    
-<!-- ## CSharp to PlantUML (Optional, in case you don't find the extension through Visual Studio Code)
-
-  * [CSharp to PlantUML](https://github.com/pierre3/PlantUmlClassDiagramGenerator)
-  * Install
-  ```bash
-  $ dotnet tool install --global PlantUmlClassDiagramGenerator
-  ```
-  * Use
-  ```bash
-  $ puml-gen ./Program.cs -public
-  ```
-  * Copy the text from *.puml and visualize using [PUML Viewer](https://www.planttext.com) -->
-
 ## PlantUML via Extension of VSCode
   * PlantUML is an Extension for viewing *.puml files.
   * Prerequisite maybe needed (check the documentation of the extension): 
@@ -227,6 +212,9 @@ class Program
   * Contact
   * Acknowledgments
 
+## Uninstall .NET 10 SDKs
+
+* Windows does not have a native dotnet uninstall terminal command, but you can easily uninstall it through setting Apps/Installed apps. For more information, check [here](https://learn.microsoft.com/en-us/dotnet/core/install/remove-runtime-sdk-versions?pivots=os-windows).
 
 # Potential Errors
 
@@ -243,7 +231,7 @@ class Program
 * Additional IDEs
   * [Visual Studio](https://visualstudio.microsoft.com/vs/)
     * [Install Visual Studio](https://learn.microsoft.com/en-us/visualstudio/install/install-visual-studio?view=vs-2022)
-  * [JetBrain Ridar](https://www.jetbrains.com/rider/)
+  * [JetBrain Rider](https://www.jetbrains.com/rider/)
 * [Microsoft Learn](https://learn.microsoft.com/en-us/)
 * [Debugging in VS Code](https://code.visualstudio.com/docs/csharp/debugging)
 <!-- * [Announcing the .NET MAUI extension for Visual Studio Code](https://devblogs.microsoft.com/visualstudio/announcing-the-dotnet-maui-extension-for-visual-studio-code/)  -->
