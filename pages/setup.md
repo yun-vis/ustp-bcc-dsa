@@ -36,7 +36,7 @@ Windows/MacOS/Linux: Visual Studio Code + .Net 10
 # PlantUML
   * This tool converts your C# project into a format that can be visualized.
 
-## PlantUml Class Diagram Generator (Enterprise Standard)
+## Option 1: PlantUml Class Diagram Generator (Enterprise Standard)
 
 ### Step1-1: Convert Project Folder to PlantUML (Install .NET Global Tool) 
 ```bash
@@ -78,10 +78,10 @@ $ puml-gen ./MyProject ./diagrams/full.puml -dir -allInOne -excludePaths bin,obj
       * Note that if you changed the default path of your package manager (i.e., homebrew), you will need to specify it through the "plantuml.commandArgs" command.
   * Usage: Alt+D (Windows)/Option+D (Mac OS) to enable the preview function
 
-## Install Modern Roslyn-Based Tool (Modern, Recommended)
+## Option 2: Modern Roslyn-Based Tool (Modern, Recommended)
 
 * Mermaid.js is an open-source, JavaScript-based tool that uses simple text and code to generate diagrams and charts dynamically.
-* The drawback of this tool is that it is blocked by the Windows Defender of our IT. You need to run it on [WSL](https://yun-vis.net/ustp-bcc-dsa/pages/wsl) if you use Lab PCs.
+* The drawback of this tool is that it is blocked by the Windows Defender of our IT. You need to run it on [WSL](https://yun-vis.net/ustp-bcc-dsa/pages/wsl) if you use Lab PCs at the university.
 
 ```bash
 // Install the open-source Mermaid Class Diagram Generator
