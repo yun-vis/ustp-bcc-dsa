@@ -93,6 +93,10 @@ $ mkdir docs
 $ mcdg -p ./MyProject -o ./docs/diagram.md
 ```
 
+* **-p**: Project folder path
+* **-o**: Output path
+
+
 ## Check Your Installed .Net SDK
 
 ```bash
