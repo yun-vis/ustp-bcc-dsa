@@ -33,7 +33,7 @@ Windows/MacOS/Linux: Visual Studio Code + .Net 10
   * Turn on Word Wrap in the Setting if preferred. File -> Preferences -> Setting
   * Enable Auto Save. File -> Auto Save
 
-# PlantUML
+# Class Diagram Generator
   * This tool converts your C# project into a format that can be visualized.
 
 ## Option 1: PlantUml Class Diagram Generator (Enterprise Standard)
@@ -96,6 +96,20 @@ $ mcdg -p ./MyProject -o ./docs/diagram.md
 * **-p**: Project folder path
 * **-o**: Output path
 
+### Potential Errors
+  * If you got an error saying that you are missing Framework: 'Microsoft.NETCore.App', version '8.0.0' (x64), reinstall mcdg by add [**--allow-roll-forward** parameter](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-tool-install#options). This parameter allows the tool to use a newer version of the .NET runtime if the runtime it targets isn't installed.
+  ```bash
+  $ dotnet tool uninstall -g mcdg
+  $ dotnet tool install -g mcdg --allow-roll-forward
+  ```
+  * For Mac users, if your mac cannot recognize mcdg as a command after a full reboot, or 
+  ```bash
+  $  source ~/.zshrc
+  ```
+  you will need to add the binary to the .zshrc, so your OS recognizes it.
+  ```bash
+  echo 'export PATH="$PATH:$HOME/.dotnet/tools"' >> ~/.zshrc && source ~/.zshrc
+  ```
 
 ## Check Your Installed .Net SDK
 
