@@ -81,6 +81,7 @@ $ puml-gen ./MyProject ./diagrams/full.puml -dir -allInOne -excludePaths bin,obj
 ## Option 2: Modern Roslyn-Based Tool (Modern, Recommended)
 
 * Mermaid.js is an open-source, JavaScript-based tool that uses simple text and code to generate diagrams and charts dynamically.
+* [Mermaid Class Diagram Generator (mcdg)](https://www.nuget.org/packages/mcdg#readme-body-tab)
 * The drawback of this tool is that it is blocked by the Windows Defender of our IT. You need to run it on [WSL](https://yun-vis.net/ustp-bcc-dsa/pages/wsl) if you use Lab PCs at the university.
 
 ```bash
@@ -97,11 +98,6 @@ $ mcdg -p ./MyProject -o ./docs/diagram.md
 * **-o**: Output path
 
 ### Potential Errors
-  * If you got an error saying that you are missing Framework: 'Microsoft.NETCore.App', version '8.0.0' (x64), reinstall mcdg by add [**--allow-roll-forward** parameter](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-tool-install#options). This parameter allows the tool to use a newer version of the .NET runtime if the runtime it targets isn't installed.
-  ```bash
-  $ dotnet tool uninstall -g mcdg
-  $ dotnet tool install -g mcdg --allow-roll-forward
-  ```
   * For Mac users, if your mac cannot recognize mcdg as a command after a full reboot, or 
   ```bash
   $  source ~/.zshrc
@@ -109,6 +105,11 @@ $ mcdg -p ./MyProject -o ./docs/diagram.md
   you will need to add the binary to the .zshrc, so your OS recognizes it.
   ```bash
   echo 'export PATH="$PATH:$HOME/.dotnet/tools"' >> ~/.zshrc && source ~/.zshrc
+  ```
+  * If you got an error saying that you are missing Framework: 'Microsoft.NETCore.App', version '8.0.0' (x64), reinstall mcdg by add [**--allow-roll-forward** parameter](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-tool-install#options). This parameter allows the tool to use a newer version of the .NET runtime if the runtime it targets isn't installed.
+  ```bash
+  $ dotnet tool uninstall -g mcdg
+  $ dotnet tool install -g mcdg --allow-roll-forward
   ```
 
 ## Check Your Installed .Net SDK
