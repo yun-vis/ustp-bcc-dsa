@@ -22,11 +22,15 @@ The core components of the Windows Subsystem for Linux (WSL) are included by def
 $ wsl --list --online
 // Install a distribution
 $ wsl --install Ubuntu-24.04
+// Check if there is a newest version
+$ wsl --update
 // List your installed distributions 
 $ wsl -l -v
 // Uninstall a distribution when it is not necessary anymore
 // $ wsl --unregister Ubuntu-24.04
 ```
+
+# Repeat the .NET installation below on this virtula machine
 
 ## Install .NET sdk
 
