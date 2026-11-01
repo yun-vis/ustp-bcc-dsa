@@ -38,66 +38,146 @@ A search algorithm is defined as a precisely defined procedure for locating spec
 
 In MyBusiness/Program.cs,
 ```csharp
+namespace MyBusiness;
+
+using System.Diagnostics;
+
+using DataStructureLibrary.SinglyLinkedList;
+// using DataStructureLibrary.DoublyLinkedList;
+using AlgorithmLibrary;
 using AlgorithmLibrary.LinearSearch;
 using AlgorithmLibrary.BinarySearch;
 
-namespace MyBusiness;
-
 class Program
 {
-    static void Main(string[] args)
+    enum SearchAlgorithm { Linear, Binary }
+
+    static void Main()
     {
-        // Input validation
-        if (args.Length != 2)
+        // Part 1: Demonstration of Linked List operations
+        ListDemo();
+
+        // Part 2: Demonstration of sorting and searching algorithms
+        Random random = new Random(0); 
+
+        // Part 2b: Searching with generics, the same algorithms work on int and string
+        // Binary search requires a sorted list
+        int[] sortedNumbers = { 1, 3, 5, 7, 9, 11 };
+        string[] sortedLetters = { "a", "b", "c", "d", "e" };
+        SearchDemo("Integer List", sortedNumbers, 7);
+        SearchDemo("String List", sortedLetters, "c");
+
+        // Runtime comparison on a large sorted int list
+        int searchSize = 100_000;
+        int repeats = 1000;
+        int[] largeNumbers = new int[searchSize];
+        for (int i = 0; i < searchSize; i++)
         {
-            Console.WriteLine("Sorting type is not specified or the list is empty. Please use \n -Linear YourList \n -Binary YourList \n -Bubble YourList \n -Merge YourList \n -Quick YourList \n for this command.");
-            return;
+            largeNumbers[i] = i * 2;
         }
-
-        // Read list to be sorted and convert elements to integers
-        string[] elements = args[1].Split(',');
-        Console.WriteLine("User Input List: " + args[1]);
-
-        // Select the specified sorting algorithm 
-        switch (args[0])
+        // Search for random keys, half of them odd (i.e. not in the list)
+        int[] numberKeys = new int[repeats];
+        for (int i = 0; i < repeats; i++)
         {
-            case "-Linear":
-                LinearSearch<string>.PrintList("Initial List", elements);
-                int idL = LinearSearch<string>.Search(elements, "a");
-                Console.WriteLine("Index of the List: " + idL);
-                break;
-            case "-Binary":
-                BinarySearch<string>.PrintList("Initial List", elements);
-                int idB = BinarySearch<string>.Search(elements, "c");
-                Console.WriteLine("Index of the List: " + idB);
-                break;
+            numberKeys[i] = random.Next(0, searchSize * 2);
+        }
+        SearchBenchmark("int", largeNumbers, numberKeys);
+    }
+
+    static void ListDemo()
+    {
+        // Single linked list
+        SinglyLinkedList list = new SinglyLinkedList();
+        // Doubly linked list
+        // DoublyLinkedList list = new DoublyLinkedList();
+        list.InsertLast(6);
+        list.InsertLast(4);
+        list.InsertFront(2);
+        list.PrintList();
+        // list.DeleteNodebyKey(2);
+        // list.PrintList();
+        list.InsertAfter(list.FindbyKey(4), 5);
+        // list.PrintList();
+        // list.Sort();
+        // list.PrintList();
+    }
+
+    // Returns the index of the key with the given searching algorithm, works for any comparable type T
+    static int Search<T>(SearchAlgorithm algorithm, T[] list, T key) where T : IComparable<T>
+    {
+        switch (algorithm)
+        {
+            case SearchAlgorithm.Linear:
+                return LinearSearch<T>.Search(list, key);
+            case SearchAlgorithm.Binary:
+                return BinarySearch<T>.Search(list, key);
             default:
-                Console.WriteLine("Specified algorithm is not found.");
-                break;
+                Console.WriteLine($"Unknown searching algorithm: {algorithm}");
+                return -1;
+        }
+    }
+
+    // Finds the key with every searching algorithm
+    static void SearchDemo<T>(string label, T[] list, T key) where T : IComparable<T>
+    {
+        ConsoleIO<T>.PrintList(label, list);
+        SearchAlgorithm[] searchers = Enum.GetValues<SearchAlgorithm>();
+        for (int i = 0; i < searchers.Length; i++)
+        {
+            Console.WriteLine($"{searchers[i]} Search - Index of {key}: {Search(searchers[i], list, key)}");
+        }
+    }
+
+    // Times every searching algorithm over the same keys
+    static void SearchBenchmark<T>(string label, T[] list, T[] keys) where T : IComparable<T>
+    {
+        Console.WriteLine($"\nSearching performance test ({label}): {keys.Length} searches in a list of {list.Length} elements");
+        SearchAlgorithm[] searchers = Enum.GetValues<SearchAlgorithm>();
+        for (int i = 0; i < searchers.Length; i++)
+        {
+            // Warm up so JIT compilation is not included in the measurement
+            Search(searchers[i], list, keys[0]);
+
+            // Provides a set of methods and properties that you can use to accurately measure elapsed time.
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            for (int j = 0; j < keys.Length; j++)
+            {
+                Search(searchers[i], list, keys[j]);
+            }
+            stopwatch.Stop();
+            double time = stopwatch.Elapsed.TotalMilliseconds;
+            // F3 formats the number to 3 decimal places, F6 formats to 6 decimal places
+            Console.WriteLine($"{searchers[i]} Search: {time:F3} ms total, {time / keys.Length:F6} ms per search");
         }
     }
 }
 ```
 ```bash
-$ dotnet run -Linear s,a,b  
-$ User Input List: s,a,b
+$ ##################################
+$ Integer List:  1 3 5 7 9 11
+$ ##################################
+$ Linear Search - Index of 7: 3
+$ Binary Search - Index of 7: 3
 $ 
 $ ##################################
-$ Initial List:  s a b
+$ String List:  a b c d e
 $ ##################################
-$ Index of the List: 1
+$ Linear Search - Index of c: 2
+$ Binary Search - Index of c: 2
+$ 
+$ Searching performance test (int): 1000 searches in a list of 100000 elements
+$ Linear Search: 114.343 ms total, 0.114343 ms per search
+$ Binary Search: 0.115 ms total, 0.000115 ms per search
 ```
 
 In AlgorithmLibrary/ConsoleIO.cs,
 ```csharp
 namespace AlgorithmLibrary;
 
-public class ConsoleIO<T> where T : IComparable<T>
+public class ConsoleIO<T>
 {
     // Constructor
-    public ConsoleIO()
-    {
-    }
+    public ConsoleIO() { }
 
     // IO
     public static void PrintList(string listType, T[] array)
@@ -146,34 +226,46 @@ namespace AlgorithmLibrary.BinarySearch;
 // [IMPORTANT] can be applied only on a sorted list
 public class BinarySearch<T> : ConsoleIO<T> where T : IComparable<T>
 {
+    // Defualt constructor
     BinarySearch() { }
+
+    // Returns the index of x if found, otherwise -1
     public static int Search(T[] array, T x)
     {
+        // Validation
+        ArgumentNullException.ThrowIfNull(array);
+
         int low = 0, high = array.Length - 1;
 
         while (low <= high)
         {
             int mid = low + (high - low) / 2;
+            // CompareTo comes from the IComparable<T> interface required by the class constraint
+            int order = array[mid].CompareTo(x);
 
             // Check if x is present at mid
-            if (array[mid].CompareTo(x) == 0)
+            if (order == 0)
             {
                 return mid;
             }
-            // If x greater, ignore left half
-            else if (array[mid].CompareTo(x) < 0)
+            // If array[mid] is smaller than x, ignore left half
+            else if (order < 0)
             {
                 low = mid + 1;
             }
-            // If x is smaller, ignore right half
+            // If array[mid] is larger than x, ignore right half
             else
             {
                 high = mid - 1;
             }
         }
 
-        // If we reach here, then element does not exist
+        // If we reach here, then element does not exist;
         return -1;
+        // low is the index of the first element larger than x
+        // return ~low; // bitwise complement of low
+        // returns the index of x if found, otherwise a negative number that is the bitwise complement (~) of the index where x would be inserted
+        // return Array.BinarySearch(array, x); 
     }
 }
 ```
@@ -185,74 +277,244 @@ A Sorting Algorithm is used to rearrange a given array or list of elements in an
 
 In MyBusiness/Program.cs,
 ```csharp
+namespace MyBusiness;
+
+using System.Diagnostics;
+
+using DataStructureLibrary.SinglyLinkedList;
+// using DataStructureLibrary.DoublyLinkedList;
+using AlgorithmLibrary;
 using AlgorithmLibrary.LinearSearch;
 using AlgorithmLibrary.BinarySearch;
 using AlgorithmLibrary.BubbleSort;
 using AlgorithmLibrary.MergeSort;
 using AlgorithmLibrary.QuickSort;
 
-namespace MyBusiness;
-
 class Program
 {
-    static void Main(string[] args)
+    enum SearchAlgorithm { Linear, Binary }
+    enum SortAlgorithm { Bubble, Merge, Quick }
+    // enum SortAlgorithm { Bubble = 10, Merge = 20, Quick = 30 }
+
+
+    static void Main()
     {
-        // Input validation
-        if (args.Length != 2)
+        // Part 1: Demonstration of Linked List operations
+        ListDemo();
+
+        // Part 2: Demonstration of sorting and searching algorithms
+        // Part 2a: Sorting (int only)
+        int[] numbers = { 1, 9, 5, 7, 3, 11 };
+        // Can be SortAlgorithm.Bubble, SortAlgorithm.Merge, SortAlgorithm.Quick
+        SortDemo(SortAlgorithm.Merge, numbers);
+
+        // Runtime comparison on a large random list (steps are not printed)
+        int sortSize = 10_000; // The _ is just a digit separator. 
+        // Random(0) constructor with a seed ensures the same random numbers are generated each time
+        // Random() with no seed will get a different sequence each run.
+        Random random = new Random(0); 
+        int[] largeUnsorted = new int[sortSize];
+        // Initialize the array with random numbers
+        for (int i = 0; i < sortSize; i++)
         {
-            Console.WriteLine("Sorting type is not specified or the list is empty. Please use \n -Linear YourList \n -Binary YourList \n -Bubble YourList \n -Merge YourList \n -Quick YourList \n for this command.");
-            return;
+            largeUnsorted[i] = random.Next(0, sortSize * 10);
         }
+        SortBenchmark(largeUnsorted);
 
-        // Read list to be sorted and convert elements to integers
-        string[] elements = args[1].Split(',');
-        Console.WriteLine("User Input List: " + args[1]);
+        // Part 2b: Searching with generics, the same algorithms work on int and string
+        // Binary search requires a sorted list
+        int[] sortedNumbers = { 1, 3, 5, 7, 9, 11 };
+        string[] sortedLetters = { "a", "b", "c", "d", "e" };
+        SearchDemo("Integer List", sortedNumbers, 7);
+        SearchDemo("String List", sortedLetters, "c");
 
-        // Select the specified sorting algorithm 
-        switch (args[0])
+        // Runtime comparison on a large sorted int list
+        int searchSize = 100_000;
+        int repeats = 1000;
+        int[] largeNumbers = new int[searchSize];
+        for (int i = 0; i < searchSize; i++)
         {
-            case "-Linear":
-                LinearSearch<string>.PrintList("Initial List", elements);
-                int idL = LinearSearch<string>.Search(elements, "a");
-                Console.WriteLine("Index of the List: " + idL);
+            largeNumbers[i] = i * 2;
+        }
+        // Search for random keys, half of them odd (i.e. not in the list)
+        int[] numberKeys = new int[repeats];
+        for (int i = 0; i < repeats; i++)
+        {
+            numberKeys[i] = random.Next(0, searchSize * 2);
+        }
+        SearchBenchmark("int", largeNumbers, numberKeys);
+    }
+
+    static void ListDemo()
+    {
+        // Single linked list
+        SinglyLinkedList list = new SinglyLinkedList();
+        // Doubly linked list
+        // DoublyLinkedList list = new DoublyLinkedList();
+        list.InsertLast(6);
+        list.InsertLast(4);
+        list.InsertFront(2);
+        list.PrintList();
+        // list.DeleteNodebyKey(2);
+        // list.PrintList();
+        list.InsertAfter(list.FindbyKey(4), 5);
+        // list.PrintList();
+        // list.Sort();
+        // list.PrintList();
+    }
+
+    // Sorts the array in place with the given sorting algorithm
+    static void Sort(SortAlgorithm algorithm, int[] array, bool printSteps)
+    {
+        switch (algorithm)
+        {
+            case SortAlgorithm.Bubble:
+                BubbleSort<int>.Sorter(array, printSteps);
                 break;
-            case "-Binary":
-                BinarySearch<string>.PrintList("Initial List", elements);
-                int idB = BinarySearch<string>.Search(elements, "c");
-                Console.WriteLine("Index of the List: " + idB);
+            case SortAlgorithm.Merge:
+                MergeSort<int>.Sorter(array, 0, array.Length - 1, printSteps);
                 break;
-            case "-Bubble":
-                BubbleSort<string>.PrintList("Initial List", elements);
-                BubbleSort<string>.Sorter(elements);
-                BubbleSort<string>.PrintList("Sorted List", elements);
-                break;
-            case "-Merge":
-                MergeSort<string>.PrintList("Initial List", elements);
-                MergeSort<string>.Sorter(elements, 0, elements.Length - 1);
-                MergeSort<string>.PrintList("Sorted List", elements);
-                break;
-            case "-Quick":
-                QuickSort<string>.PrintList("Initial List", elements);
-                QuickSort<string>.Sorter(elements, 0, elements.Length - 1);
-                QuickSort<string>.PrintList("Sorted List", elements);
+            case SortAlgorithm.Quick:
+                QuickSort<int>.Sorter(array, 0, array.Length - 1, printSteps);
                 break;
             default:
-                Console.WriteLine("Specified algorithm is not found.");
+                Console.WriteLine($"Unknown sorting algorithm: {algorithm}");
                 break;
+        }
+    }
+
+    // Sorts the list in place with the given sorting algorithm and prints every step
+    static void SortDemo(SortAlgorithm algorithm, int[] list)
+    {
+        ConsoleIO<int>.PrintList("Unsorted Integer List", list);
+        Console.WriteLine($"\n--- {algorithm} Sort ---");
+        Sort(algorithm, list, true);
+        ConsoleIO<int>.PrintList($"Sorted by {algorithm} Sort", list);
+    }
+
+    // Times every sorting algorithm on its own copy of the same list (steps are not printed)
+    static void SortBenchmark(int[] list)
+    {
+        SortAlgorithm[] sorters = Enum.GetValues<SortAlgorithm>();
+        Console.WriteLine($"\nSorting performance test: {list.Length} random elements");
+        for (int i = 0; i < sorters.Length; i++)
+        {
+            // Warm up so JIT compilation is not included in the measurement
+            // C# isn't compiled straight to machine code. dotnet build produces IL, 
+            // an intermediate bytecode.
+            // At run time, the JIT (just-in-time) compiler turns each method into machine code 
+            // the first time it is called. Later calls reuse that machine code.
+            // Maybe it is not that important for now
+            Sort(sorters[i], list.Take(10).ToArray(), false);
+
+            // ToArray() is a generic LINQ method, so called on an int[] it returns a deep copy int[]. 
+            int[] copy = list.ToArray();
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            Sort(sorters[i], copy, false);
+            stopwatch.Stop();
+            Console.WriteLine($"{sorters[i] + " Sort",-12}: {stopwatch.Elapsed.TotalMilliseconds:F3} ms");
+        }
+    }
+
+    // Returns the index of the key with the given searching algorithm, works for any comparable type T
+    static int Search<T>(SearchAlgorithm algorithm, T[] list, T key) where T : IComparable<T>
+    {
+        switch (algorithm)
+        {
+            case SearchAlgorithm.Linear:
+                return LinearSearch<T>.Search(list, key);
+            case SearchAlgorithm.Binary:
+                return BinarySearch<T>.Search(list, key);
+            default:
+                Console.WriteLine($"Unknown searching algorithm: {algorithm}");
+                return -1;
+        }
+    }
+
+    // Finds the key with every searching algorithm
+    static void SearchDemo<T>(string label, T[] list, T key) where T : IComparable<T>
+    {
+        ConsoleIO<T>.PrintList(label, list);
+        SearchAlgorithm[] searchers = Enum.GetValues<SearchAlgorithm>();
+        for (int i = 0; i < searchers.Length; i++)
+        {
+            Console.WriteLine($"{searchers[i]} Search - Index of {key}: {Search(searchers[i], list, key)}");
+        }
+    }
+
+    // Times every searching algorithm over the same keys
+    static void SearchBenchmark<T>(string label, T[] list, T[] keys) where T : IComparable<T>
+    {
+        Console.WriteLine($"\nSearching performance test ({label}): {keys.Length} searches in a list of {list.Length} elements");
+        SearchAlgorithm[] searchers = Enum.GetValues<SearchAlgorithm>();
+        for (int i = 0; i < searchers.Length; i++)
+        {
+            // Warm up so JIT compilation is not included in the measurement
+            Search(searchers[i], list, keys[0]);
+
+            // Provides a set of methods and properties that you can use to accurately measure elapsed time.
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            for (int j = 0; j < keys.Length; j++)
+            {
+                Search(searchers[i], list, keys[j]);
+            }
+            stopwatch.Stop();
+            double time = stopwatch.Elapsed.TotalMilliseconds;
+            // F3 formats the number to 3 decimal places, F6 formats to 6 decimal places
+            Console.WriteLine($"{searchers[i]} Search: {time:F3} ms total, {time / keys.Length:F6} ms per search");
         }
     }
 }
 ```
 ```bash
-$ User Input List: 3,2,1
-$
-$ ##################################
-$ Initial List:  3 2 1
-$ ##################################
+$ The singlyLinkedList: 2 6 4 
+$ The given previous node Cannot be null!
 $ 
 $ ##################################
-$ Sorted List:  1 2 3
+$ Unsorted Integer List:  1 9 5 7 3 11
 $ ##################################
+$ 
+$ --- Merge Sort ---
+$    Left:  1 9 5
+$    Left:  1 9
+$    Left:  1
+$    Right:  9
+$   Merged:  1 9
+$    Right:  5
+$   Merged:  1 5 9
+$    Right:  7 3 11
+$    Left:  7 3
+$    Left:  7
+$    Right:  3
+$   Merged:  3 7
+$    Right:  11
+$   Merged:  3 7 11
+$   Merged:  1 3 5 7 9 11
+$ 
+$ ##################################
+$ Sorted by Merge Sort:  1 3 5 7 9 11
+$ ##################################
+$ 
+$ Sorting performance test: 10000 random elements
+$ Bubble Sort : 285.434 ms
+$ Merge Sort  : 1.321 ms
+$ Quick Sort  : 0.865 ms
+$ 
+$ ##################################
+$ Integer List:  1 3 5 7 9 11
+$ ##################################
+$ Linear Search - Index of 7: 3
+$ Binary Search - Index of 7: 3
+$ 
+$ ##################################
+$ String List:  a b c d e
+$ ##################################
+$ Linear Search - Index of c: 2
+$ Binary Search - Index of c: 2
+$ 
+$ Searching performance test (int): 1000 searches in a list of 100000 elements
+$ Linear Search: 114.767 ms total, 0.114767 ms per search
+$ Binary Search: 0.119 ms total, 0.000119 ms per search
 ```
 
 ## Bubble Sort
@@ -266,11 +528,11 @@ public class BubbleSort<T> : ConsoleIO<T> where T : IComparable<T>
     public BubbleSort() { }
 
     // Methods
-    public static void Sorter(T[] array)
+    public static void Sorter(T[] array, bool printSteps = true)
     {
         int length = array.Length;
 
-        Console.WriteLine("\nSteps:");
+        if (printSteps) Console.WriteLine("\nSteps:");
         for (int i = 0; i < length - 1; i++)
         {
             for (int j = 1; j < length; j++)
@@ -281,7 +543,7 @@ public class BubbleSort<T> : ConsoleIO<T> where T : IComparable<T>
                     T temp = array[j];
                     array[j] = array[j - 1];
                     array[j - 1] = temp;
-                    _printSteps(array);
+                    if (printSteps) _printSteps(array);
                 }
             }
         }
@@ -310,7 +572,7 @@ public class MergeSort<T> : ConsoleIO<T> where T : IComparable<T>
     public MergeSort() { }
 
     // Methods
-    public static void Sorter(T[] array, int left, int right)
+    public static void Sorter(T[] array, int left, int right, bool printSteps = true)
     {
         int length = array.Length;
 
@@ -320,16 +582,16 @@ public class MergeSort<T> : ConsoleIO<T> where T : IComparable<T>
             int middle = (left + right) / 2;
 
             // Sort the left array
-            _printSteps("  Left: ", array, left, middle);
-            Sorter(array, left, middle);
+            if (printSteps) _printSteps("  Left: ", array, left, middle);
+            Sorter(array, left, middle, printSteps);
 
             // Sort the right array
-            _printSteps("  Right: ", array, middle + 1, right);
-            Sorter(array, middle + 1, right);
+            if (printSteps) _printSteps("  Right: ", array, middle + 1, right);
+            Sorter(array, middle + 1, right, printSteps);
 
             // Merge the left and the right array
             _merge(array, left, middle, right);
-            _printSteps(" Merged: ", array, left, right);
+            if (printSteps) _printSteps(" Merged: ", array, left, right);
         }
         else
         {
@@ -430,18 +692,30 @@ public class QuickSort<T> : ConsoleIO<T> where T : IComparable<T>
     public QuickSort() { }
 
     // Methods
-    public static void Sorter(T[] array, int low, int high)
+    public static void Sorter(T[] array, int low, int high, bool printSteps = true)
     {
         if (low < high)
         {
             // pi is the partition return index of pivot
             int pi = _partition(array, low, high);
+            if (printSteps) _printSteps($" Pivot {array[pi]}: ", array, low, high);
 
             // recursion calls for smaller elements
             // and greater or equals elements
-            Sorter(array, low, pi - 1);
-            Sorter(array, pi + 1, high);
+            Sorter(array, low, pi - 1, printSteps);
+            Sorter(array, pi + 1, high, printSteps);
         }
+    }
+
+    static void _printSteps(string label, T[] array, int low, int high)
+    {
+        // Print the current state of the partitioned range
+        Console.Write($" {label}");
+        for (int i = low; i < high + 1; i++)
+        {
+            Console.Write($" {array[i]}");
+        }
+        Console.WriteLine("");
     }
 
     static int _partition(T[] array, int low, int high)
