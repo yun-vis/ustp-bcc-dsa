@@ -21,8 +21,8 @@ DS&A CheatSheet is a website storing teaching material for DS&A development usin
 6. [OOP III:Inheritance](pages/inheritance)
 7. [OOP IV: Polymorphism](pages/polymorphism)
 8. [DS&A: Basics of Data Structure: List](pages/list)
-9.  [DS&A: Basics of Algorithm: Searching and Sorting](pages/algorithm)
-10. [DS&A: Complexity Theory](pages/complexity)
+9.  [DS&A: Basics of Algorithm: Searching](pages/searching)
+10. [DS&A: Basics of Algorithm: Sorting and Complexity Theory](pages/sorting)
 11. [DS&A: Graphs I, Basic components](pages/graph1)
 12. [DS&A: Graphs II, Debugging](pages/graph2)
 13. 1~2 weeks break
