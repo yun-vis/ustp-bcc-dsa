@@ -54,13 +54,13 @@ class Program
 
     static void Main()
     {
-        // Part 1: Demonstration of Linked List operations
-        ListDemo();
+        // Demonstration of Linked List operations
+        // ListDemo();
 
-        // Part 2: Demonstration of sorting and searching algorithms
+        // Demonstration of sorting and searching algorithms
         Random random = new Random(0); 
 
-        // Part 2b: Searching with generics, the same algorithms work on int and string
+        // Part b: Searching with generics, the same algorithms work on int and string
         // Binary search requires a sorted list
         int[] sortedNumbers = { 1, 3, 5, 7, 9, 11 };
         string[] sortedLetters = { "a", "b", "c", "d", "e" };
@@ -73,13 +73,15 @@ class Program
         int[] largeNumbers = new int[searchSize];
         for (int i = 0; i < searchSize; i++)
         {
-            largeNumbers[i] = i * 2;
+            largeNumbers[i] = i * 2; // Create a sorted list with value 2*i
         }
         // Search for random keys, half of them odd (i.e. not in the list)
         int[] numberKeys = new int[repeats];
         for (int i = 0; i < repeats; i++)
         {
-            numberKeys[i] = random.Next(0, searchSize * 2);
+            numberKeys[i] = random.Next(0, searchSize * 2); 
+            // [0, searchSize * 2] is the range for a key
+            // In this case, only half of the keys can be found.
         }
         SearchBenchmark("int", largeNumbers, numberKeys);
     }
@@ -94,15 +96,15 @@ class Program
         list.InsertLast(4);
         list.InsertFront(2);
         list.PrintList();
-        // list.DeleteNodebyKey(2);
-        // list.PrintList();
+        list.DeleteNodebyKey(2);
+        list.PrintList();
         list.InsertAfter(list.FindbyKey(4), 5);
-        // list.PrintList();
-        // list.Sort();
-        // list.PrintList();
+        list.PrintList();
+        list.Sort();
+        list.PrintList();
     }
 
-       // Returns the index of the key with the given searching algorithm, works for any comparable type T
+    // Returns the index of the key with the given searching algorithm, works for any comparable type T
     static int Search<T>(SearchAlgorithm algorithm, T[] list, T key) where T : IComparable<T>
     {
         switch (algorithm)
