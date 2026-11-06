@@ -72,7 +72,7 @@ In DataStructureLibrary/SinglyLinkedList.cs
 ```csharp
 namespace DataStructureLibrary.SinglyLinkedList;
 
-public class Node
+public class Node : IComparable<Node>
 {
     // Fields
     public int Data;
@@ -83,6 +83,20 @@ public class Node
     {
         Data = d;
         Next = null;
+    }
+
+    // Methods
+    // IComparable<Node> implementation: compares two nodes by their Data.
+    // Returns < 0 if this node comes before other, 0 if equal, > 0 if after.
+    public int CompareTo(Node? other)
+    {
+        // A null node is treated as smaller than any existing node
+        if (other == null)
+        {
+            return 1;
+        }
+
+        return Data.CompareTo(other.Data);
     }
 
     // Finalizers
@@ -99,9 +113,6 @@ public class SinglyLinkedList
     {
         _head = null;
     }
-
-    // Finalizer
-    ~SinglyLinkedList() { }
 
     // Methods
     // Public Methods
@@ -212,11 +223,7 @@ public class SinglyLinkedList
     {
         Node? temp = _head;
 
-        if (_head == null)
-        {
-            return;
-        }
-        else
+        if (_head != null)
         {
             while (temp != null)
             {
