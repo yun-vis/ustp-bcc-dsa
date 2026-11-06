@@ -6,7 +6,7 @@ classes: wide
 header:
   image: /assets/images/teaser/teaser.png
   caption: "Image credit: [**Yun**](http://yun-vis.net)"
-last_modified_at: 2026-05-11
+last_modified_at: 2026-06-11
 ---
 
 ## Console Project vs. Library Project
@@ -41,8 +41,6 @@ In MyBusiness/Program.cs,
 namespace MyBusiness;
 
 using System.Diagnostics;
-using DataStructureLibrary.SinglyLinkedList;
-// using DataStructureLibrary.DoublyLinkedList;
 
 using AlgorithmLibrary;
 using AlgorithmLibrary.LinearSearch;
@@ -54,80 +52,67 @@ class Program
 
     static void Main()
     {
-        // Demonstration of Linked List operations
-        // ListDemo();
-
-        // Demonstration of sorting and searching algorithms
-        Random random = new Random(0); 
+        // Random(0) constructor with a seed ensures the same random numbers are generated each time
+        // Random() with no seed will get a different sequence each run.
+        Random random = new Random(0);
 
         // Part b: Searching with generics, the same algorithms work on int and string
         // Binary search requires a sorted list
         int[] sortedNumbers = { 1, 3, 5, 7, 9, 11 };
         string[] sortedLetters = { "a", "b", "c", "d", "e" };
-        SearchDemo("Integer List", sortedNumbers, 7);
-        SearchDemo("String List", sortedLetters, "c");
+        ConsoleIO<int>.PrintList("Integer List", sortedNumbers);
+        Search(SearchAlgorithm.Linear, sortedNumbers, 7, true);
+        Search(SearchAlgorithm.Binary, sortedNumbers, 7, true);
+
+        ConsoleIO<string>.PrintList("String List", sortedLetters);
+        Search(SearchAlgorithm.Linear, sortedLetters, "c", true);
+        Search(SearchAlgorithm.Binary, sortedLetters, "c", true);
 
         // Runtime comparison on a large sorted int list
-        int searchSize = 100_000;
-        int repeats = 1000;
+        SearchBenchmarkDemo(random, 100_000, 1000);
+    }
+
+    // Returns the index of the key with the given searching algorithm, works for any comparable type T
+    // If printResult is true, it also prints the index that was found
+    static int Search<T>(SearchAlgorithm algorithm, T[] list, T key, bool printResult) where T : IComparable<T>
+    {
+        int index;
+        switch (algorithm)
+        {
+            case SearchAlgorithm.Linear:
+                index = LinearSearch<T>.Search(list, key);
+                break;
+            case SearchAlgorithm.Binary:
+                index = BinarySearch<T>.Search(list, key);
+                break;
+            default:
+                Console.WriteLine($"Unknown searching algorithm: {algorithm}");
+                index = -1;
+                break;
+        }
+
+        if (printResult)
+        {
+            Console.WriteLine($"{algorithm} Search - Index of {key}: {index}");
+        }
+        return index;
+    }
+
+    // Builds a large sorted list and random keys, then runs the searching benchmark on them
+    static void SearchBenchmarkDemo(Random random, int searchSize, int repeats)
+    {
         int[] largeNumbers = new int[searchSize];
         for (int i = 0; i < searchSize; i++)
         {
-            largeNumbers[i] = i * 2; // Create a sorted list with value 2*i
+            largeNumbers[i] = i * 2;
         }
         // Search for random keys, half of them odd (i.e. not in the list)
         int[] numberKeys = new int[repeats];
         for (int i = 0; i < repeats; i++)
         {
-            numberKeys[i] = random.Next(0, searchSize * 2); 
-            // [0, searchSize * 2] is the range for a key
-            // In this case, only half of the keys can be found.
+            numberKeys[i] = random.Next(0, searchSize * 2);
         }
         SearchBenchmark("int", largeNumbers, numberKeys);
-    }
-
-    static void ListDemo()
-    {
-        // Single linked list
-        SinglyLinkedList list = new SinglyLinkedList();
-        // Doubly linked list
-        // DoublyLinkedList list = new DoublyLinkedList();
-        list.InsertLast(6);
-        list.InsertLast(4);
-        list.InsertFront(2);
-        list.PrintList();
-        list.DeleteNodebyKey(2);
-        list.PrintList();
-        list.InsertAfter(list.FindbyKey(4), 5);
-        list.PrintList();
-        list.Sort();
-        list.PrintList();
-    }
-
-    // Returns the index of the key with the given searching algorithm, works for any comparable type T
-    static int Search<T>(SearchAlgorithm algorithm, T[] list, T key) where T : IComparable<T>
-    {
-        switch (algorithm)
-        {
-            case SearchAlgorithm.Linear:
-                return LinearSearch<T>.Search(list, key);
-            case SearchAlgorithm.Binary:
-                return BinarySearch<T>.Search(list, key);
-            default:
-                Console.WriteLine($"Unknown searching algorithm: {algorithm}");
-                return -1;
-        }
-    }
-
-    // Finds the key with every searching algorithm
-    static void SearchDemo<T>(string label, T[] list, T key) where T : IComparable<T>
-    {
-        ConsoleIO<T>.PrintList(label, list);
-        SearchAlgorithm[] searchers = Enum.GetValues<SearchAlgorithm>();
-        for (int i = 0; i < searchers.Length; i++)
-        {
-            Console.WriteLine($"{searchers[i]} Search - Index of {key}: {Search(searchers[i], list, key)}");
-        }
     }
 
     // Times every searching algorithm over the same keys
@@ -138,13 +123,13 @@ class Program
         for (int i = 0; i < searchers.Length; i++)
         {
             // Warm up so JIT compilation is not included in the measurement
-            Search(searchers[i], list, keys[0]);
+            Search(searchers[i], list, keys[0], false);
 
             // Provides a set of methods and properties that you can use to accurately measure elapsed time.
             Stopwatch stopwatch = Stopwatch.StartNew();
             for (int j = 0; j < keys.Length; j++)
             {
-                Search(searchers[i], list, keys[j]);
+                Search(searchers[i], list, keys[j], false);
             }
             stopwatch.Stop();
             double time = stopwatch.Elapsed.TotalMilliseconds;
@@ -200,6 +185,10 @@ In AlgorithmLibrary/LinearSearch.cs,
 ```csharp
 namespace AlgorithmLibrary.LinearSearch;
 
+// <T> is a generic type parameter 
+// where keyword 'where T : IComparable<T>' is a generic type constraint that specifies 
+// that the type parameter T must implement the IComparable<T> interface. This ensures 
+// that the elements being searched can be compared to each other.
 public class LinearSearch<T> : ConsoleIO<T> where T : IComparable<T>
 {
     LinearSearch() { }
@@ -209,6 +198,8 @@ public class LinearSearch<T> : ConsoleIO<T> where T : IComparable<T>
         // Iterate over the array in order to find the key x
         for (int i = 0; i < array.Length; i++)
         {
+            // This does not work for self-defined types if == is not overloaded.
+            // if (array[i] == x) 
             if (array[i].CompareTo(x) == 0)
             {
                 return i;
@@ -223,7 +214,6 @@ public class LinearSearch<T> : ConsoleIO<T> where T : IComparable<T>
 
 In AlgorithmLibrary/BinarySearch.cs,
 ```csharp
-
 namespace AlgorithmLibrary.BinarySearch;
 
 // [IMPORTANT] can be applied only on a sorted list
@@ -266,8 +256,9 @@ public class BinarySearch<T> : ConsoleIO<T> where T : IComparable<T>
         // If we reach here, then element does not exist;
         return -1;
         // low is the index of the first element larger than x
-        // return ~low; // bitwise complement of low
-        // returns the index of x if found, otherwise a negative number that is the bitwise complement (~) of the index where x would be inserted
+        // return ~low; 
+        // returns the index of x if found, otherwise a negative number that is the bitwise 
+        // complement (~) of the index where x would be inserted 
         // return Array.BinarySearch(array, x); 
     }
 }
