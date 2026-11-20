@@ -116,6 +116,7 @@ public class Graph
         if (v != null)
         {
             // Remove the adjacent edges
+            // The implementation can be found in graph II.
         }
     }
 
@@ -131,6 +132,7 @@ public class Graph
     }
 
     // Method overloading
+    // Can be skipped due to the limited time
     public Vertex? HasVertex(uint id)
     {
         foreach (Vertex v in _vertices)
@@ -221,6 +223,9 @@ public class Graph
         }
         Console.WriteLine("==============================");
 
+        /********************************************/
+        /* Alternative approach using foreach loops */
+        /********************************************/
         // To improve readability, we can use foreach loops instead of for loops to iterate through the linked lists. Here is the updated code:
         // Vertex list
         // foreach (Vertex v in _vertices)
