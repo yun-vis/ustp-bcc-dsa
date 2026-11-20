@@ -153,10 +153,8 @@ public class Graph
                 if (e.Source == v || e.Target == v)
                 {
                     _edges.Remove(e);
-                    // isRemoved = true;
-                    i--;
+                    i--; // move the index to the one before
                 }
-                // if (isRemoved == true) i--;
             }
 
             // Remove the vertex from the list
