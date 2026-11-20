@@ -270,10 +270,16 @@ namespace DataStructureLibrary.Graph;
 public class Vertex
 {
     // Fields
-    public uint Id;
-    public string Name = "unknownName";
-
+    public uint Id;    
+    public string Name;
+    
     // Constructors
+    public Vertex()
+    {
+        Id = Int32.MaxValue;
+        Name = "unknownName";
+    }
+    
     public Vertex(uint id, string name)
     {
         Id = id;

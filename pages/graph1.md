@@ -8,7 +8,7 @@ header:
   caption: "Image credit: [**Yun**](http://yun-vis.net)"
 # kramdown:
 #   auto_ids: true
-last_modified_at: 2026-03-24
+last_modified_at: 2026-11-20
 ---
 
 ## Introduction Graph
@@ -202,18 +202,38 @@ public class Graph
         Console.WriteLine("==============================");
 
         // Vertex list
-        foreach (Vertex v in _vertices)
+        for (LinkedListNode<Vertex>? vertexNode = _vertices.First;
+             vertexNode != null;
+             vertexNode = vertexNode.Next)
         {
+            Vertex v = vertexNode.Value;
             Console.WriteLine($"V({v.Id}) = {v.Name}");
         }
         Console.WriteLine("==============================");
 
         // Edge list
-        foreach (Edge e in _edges)
+        for (LinkedListNode<Edge>? edgeNode = _edges.First;
+             edgeNode != null;
+             edgeNode = edgeNode.Next)
         {
+            Edge e = edgeNode.Value;
             Console.WriteLine($"E({e.Id}) = V({e.Source.Name}) -- V({e.Target.Name})");
         }
         Console.WriteLine("==============================");
+
+        // To improve readability, we can use foreach loops instead of for loops to iterate through the linked lists. Here is the updated code:
+        // Vertex list
+        // foreach (Vertex v in _vertices)
+        // {
+        //     Console.WriteLine($"V({v.Id}) = {v.Name}");
+        // }
+        // Console.WriteLine("==============================");
+
+        // // Edge list
+        // foreach (Edge e in _edges)
+        // {
+        //     Console.WriteLine($"E({e.Id}) = V({e.Source.Name}) -- V({e.Target.Name})");
+        // }
     }
 }
 ```
@@ -225,10 +245,16 @@ namespace DataStructureLibrary.Graph;
 public class Vertex
 {
     // Fields
-    public uint Id;
-    public string Name = "unknownName";
-
+    public uint Id;    
+    public string Name;
+    
     // Constructors
+    public Vertex()
+    {
+        Id = Int32.MaxValue;
+        Name = "unknownName";
+    }
+    
     public Vertex(uint id, string name)
     {
         Id = id;
